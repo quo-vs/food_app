@@ -6,7 +6,7 @@ import 'package:fooderlich/models/models.dart';
 class ExploreScreen extends StatelessWidget {
   final mockService = MockFoodService();
 
-  ExploreScreen({ Key? key }) : super(key: key);
+  ExploreScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +14,15 @@ class ExploreScreen extends StatelessWidget {
       future: mockService.getExploreData(),
       builder: (context, AsyncSnapshot<ExploreData> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          final recipes = snapshot.data?.todayRecipes ?? [];
-
-          return Center(
-            child: Container(
-              child: TodayRecipeListView(recipes: recipes,)
-            ),
+          return ListView(
+            scrollDirection: Axis.vertical,
+            children: [
+              TodayRecipeListView(recipes: snapshot.data?.todayRecipes ?? []),
+              const SizedBox(
+                height: 16,
+              ),
+              FriendPostListView(friendPosts: snapshot.data?.friendPosts ?? [])
+            ],
           );
         } else {
           return const Center(
