@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:fooderlich/components/components.dart';
 import 'package:fooderlich/models/grocery_item.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 class GroceryItemScreen extends StatefulWidget {
   final Function(GroceryItem) onCreate;
@@ -66,7 +68,28 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              final groceryItem = GroceryItem(
+                id: widget.originalItem?.id ?? const Uuid().v1(),
+                name: _nameController.text,
+                importance: _importance,
+                color: _currentColor,
+                quantity: _currentSliderValue,
+                date: DateTime(
+                  _dueDate.year,
+                  _dueDate.month,
+                  _dueDate.day,
+                  _timeOfDay.hour,
+                  _timeOfDay.minute,
+                ),
+              );
+
+              if (widget.isUpdating) {
+                widget.onUpdate(groceryItem);
+              } else {
+                widget.onCreate(groceryItem);
+              }
+            },
             icon: const Icon(Icons.check),
           )
         ],
@@ -90,6 +113,22 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
             _buildColorPicker(context),
             const SizedBox(height: 10.0),
             _buildQuantityField(),
+            GroceryTile(
+              item: GroceryItem(
+                id: 'previewMode',
+                name: _name,
+                importance: _importance,
+                color: _currentColor,
+                quantity: _currentSliderValue,
+                date: DateTime(
+                  _dueDate.year,
+                  _dueDate.month,
+                  _dueDate.day,
+                  _timeOfDay.hour,
+                  _timeOfDay.minute,
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -323,18 +362,19 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
           ],
         ),
         Slider(
-            inactiveColor: _currentColor.withOpacity(0.5),
-            activeColor: _currentColor,
-            value: _currentSliderValue.toDouble(),
-            min: 0.0,
-            max: 100.0,
-            divisions: 100,
-            label: _currentSliderValue.toInt().toString(),
-            onChanged: (value) {
-              setState(() {
-                _currentSliderValue = value.toInt();
-              });
-            })
+          inactiveColor: _currentColor.withOpacity(0.5),
+          activeColor: _currentColor,
+          value: _currentSliderValue.toDouble(),
+          min: 0.0,
+          max: 100.0,
+          divisions: 100,
+          label: _currentSliderValue.toInt().toString(),
+          onChanged: (value) {
+            setState(() {
+              _currentSliderValue = value.toInt();
+            });
+          },
+        ),
       ],
     );
   }

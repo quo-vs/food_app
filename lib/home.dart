@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
-          body: pages[tabManager.selectedTab],
+          body: IndexedStack(index: tabManager.selectedTab, children: pages),
           bottomNavigationBar: BottomNavigationBar(
             onTap: (index) {
               tabManager.goToTab(index);
