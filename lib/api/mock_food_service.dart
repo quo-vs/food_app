@@ -48,7 +48,7 @@ class MockFoodService {
     }
   }
 
-  Future<List<SimpleRecipe>> _getRecipes() async {
+  Future<List<SimpleRecipe>> getRecipes() async {
      await Future.delayed(const Duration(milliseconds: 1000));
 
     final dataString = 
