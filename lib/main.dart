@@ -33,44 +33,36 @@ class _FooderlichState extends State<Fooderlich> {
     super.initState();
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
-    final theme = FooderlichTheme.dark();
-
-    return MaterialApp(
-      title: 'Fooderlich',
-      debugShowCheckedModeBanner: false,
-      theme: theme,
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (ctx) => ProfileManager(),
-          ),
-          ChangeNotifierProvider(
-            create: (ctx) => GroceryManager(),
-          ),
-          ChangeNotifierProvider(
-            create: (ctx) => AppStateManager(),
-          ),
-        ],
-        child: Consumer<ProfileManager>(
-          builder: (context, profileManager, child) {
-            ThemeData theme;
-            if (profileManager.darkMode) {
-              theme = FooderlichTheme.dark();
-            } else {
-              theme = FooderlichTheme.light();
-            }
-
-            return MaterialApp(
-              theme: theme,
-              title: 'Fooderlich',
-              home: Router(
-                routerDelegate: _appRouter,
-              ),
-            );
-          },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => _groceryManager),
+        ChangeNotifierProvider(
+          create: (context) => _appStateManager,
         ),
+        ChangeNotifierProvider(
+          create: (context) => _profileManager,
+        )
+      ],
+      child: Consumer<ProfileManager>(
+        builder: (context, profileManager, child) {
+          ThemeData theme;
+          if (profileManager.darkMode) {
+            theme = FooderlichTheme.dark();
+          } else {
+            theme = FooderlichTheme.light();
+          }
+
+          return MaterialApp(
+            theme: theme,
+            title: 'Fooderlich',
+            home: Router(
+              routerDelegate: _appRouter,
+              backButtonDispatcher: RootBackButtonDispatcher(),
+            ),
+          );
+        },
       ),
     );
   }
