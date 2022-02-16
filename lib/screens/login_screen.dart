@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fooderlich/models/app_state_manager.dart';
 import 'package:fooderlich/models/foderlich_pages.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   static MaterialPage page() {
@@ -66,7 +68,8 @@ class LoginScreen extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         onPressed: () {
-          // Login -> to home
+          Provider.of<AppStateManager>(context, listen: false)
+            .login('mock', 'password');
         },
       ),
     );

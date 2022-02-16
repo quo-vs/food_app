@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:fooderlich/components/components.dart';
+import 'package:fooderlich/models/foderlich_pages.dart';
+import 'package:fooderlich/models/grocery_item.dart';
 import 'package:fooderlich/models/grocery_manager.dart';
 import 'package:fooderlich/screens/grocery_item_screen.dart';
 
 class GroceryListScreen extends StatelessWidget {
   final GroceryManager manager;
 
-  const GroceryListScreen({Key? key, required this.manager}) : super(key: key);
+  const GroceryListScreen({
+    Key? key, 
+    required this.manager,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +61,7 @@ class GroceryListScreen extends StatelessWidget {
                     builder: (context) => GroceryItemScreen(
                       originalItem: item,
                       onCreate: (item) {},
-                      onUpdate: (item) {
+                      onUpdate: (item, index) {
                         manager.updateItem(item, index);
                         Navigator.pop(context);
                       },

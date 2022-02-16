@@ -2,21 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:fooderlich/components/components.dart';
 import 'package:fooderlich/models/grocery_item.dart';
+import 'package:fooderlich/models/models.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class GroceryItemScreen extends StatefulWidget {
+
   final Function(GroceryItem) onCreate;
-  final Function(GroceryItem) onUpdate;
+  final Function(GroceryItem, int) onUpdate;
   final GroceryItem? originalItem;
+  final int index;
   final bool isUpdating;
 
-  const GroceryItemScreen(
-      {Key? key,
+  static MaterialPage page({
+    GroceryItem? item,
+    int index = -1,
+    required Function(GroceryItem) onCreate,
+    required Function(GroceryItem, int) onUpdate,
+  }) {
+    return MaterialPage(
+      name: FooderlichPages.groceryItemPath,
+      key: ValueKey(FooderlichPages.groceryItemPath),
+      child: GroceryItemScreen(
+        originalItem: item,
+        index: index,
+        onCreate: onCreate,
+        onUpdate: onUpdate,
+      )
+    );
+  }
+  
+
+  const GroceryItemScreen({
+    Key? key,
       required this.onCreate,
       required this.onUpdate,
-      this.originalItem})
+      this.index = -1,
+      this.originalItem,
+    })
       : isUpdating = (originalItem != null),
         super(key: key);
 
@@ -85,7 +109,7 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
               );
 
               if (widget.isUpdating) {
-                widget.onUpdate(groceryItem);
+                widget.onUpdate(groceryItem, widget.index);
               } else {
                 widget.onCreate(groceryItem);
               }
@@ -107,7 +131,7 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
             _buildImportanceField(),
             _buildDateField(context),
             _buildTimeField(context),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             _buildColorPicker(context),
