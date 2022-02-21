@@ -7,10 +7,19 @@ import 'package:provider/provider.dart';
 class ProfileScreen extends StatefulWidget {
   final User user;
 
-  const ProfileScreen({ 
-    Key? key, 
-    required this.user 
-  }) : super(key: key);
+  static MaterialPage page(User user) {
+    return MaterialPage(
+      name: FooderlichPages.profilePath,
+      key: ValueKey(
+        FooderlichPages.profilePath,
+      ),
+      child: ProfileScreen(
+        user: user,
+      ),
+    );
+  }
+
+  const ProfileScreen({Key? key, required this.user}) : super(key: key);
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -24,7 +33,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () {
-            // close
+            Provider.of<ProfileManager>(context, listen: false)
+                .tapOnProfile(false);
           },
         ),
       ),
@@ -32,9 +42,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 16,),
+            const SizedBox(
+              height: 16,
+            ),
             _buildProfile(),
-            Expanded(child: _buildMenu(),),
+            Expanded(
+              child: _buildMenu(),
+            ),
           ],
         ),
       ),
@@ -48,13 +62,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ListTile(
           title: const Text('View site'),
           onTap: () {
-             // open webview
+            Provider.of<ProfileManager>(context, listen: false)
+                .tapOnRaywe(true);
           },
         ),
         ListTile(
           title: const Text('Log out'),
           onTap: () {
-             // log out
+            Provider.of<ProfileManager>(context, listen: false)
+                .tapOnProfile(false);
+
+            Provider.of<AppStateManager>(context, listen: false).logout();
           },
         ),
       ],
@@ -62,18 +80,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildDarkModeRow() {
-    return Padding(padding: 
-    const EdgeInsets.all(16),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Text('Dark Mode'),
-        Switch(value: widget.user.darkMode, 
-        onChanged: (value) {
-          Provider.of<ProfileManager>(context, listen: false).darkMode = value;
-        })
-      ],
-    ),);
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text('Dark Mode'),
+          Switch(
+              value: widget.user.darkMode,
+              onChanged: (value) {
+                Provider.of<ProfileManager>(context, listen: false)
+                    .setDarkMode(value);
+              })
+        ],
+      ),
+    );
   }
 
   Widget _buildProfile() {
@@ -86,10 +107,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         const SizedBox(
           height: 16,
         ),
-        Text(widget.user.firstName, style: const TextStyle(fontSize: 21),),
+        Text(
+          widget.user.firstName,
+          style: const TextStyle(fontSize: 21),
+        ),
         Text(widget.user.role),
-        Text('${widget.user.points} points',
-        style: const TextStyle(fontSize: 30, color: Colors.green),)
+        Text(
+          '${widget.user.points} points',
+          style: const TextStyle(fontSize: 30, color: Colors.green),
+        )
       ],
     );
   }

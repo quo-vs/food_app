@@ -19,17 +19,17 @@ class ProfileManager extends ChangeNotifier {
   var _tapOnRaywe = false;
   var _darkMode = false;
 
-  void set darkMode(bool darkMode) {
+  void setDarkMode(bool darkMode) {
     _darkMode = darkMode;
     notifyListeners();
   }
 
-    void set tapOnRaywe(bool selected) {
+    void tapOnRaywe(bool selected) {
     _tapOnRaywe = selected;
     notifyListeners();
   }
 
-    void set tapOnProfile(bool selected) {
+    void tapOnProfile(bool selected) {
     _didSelectUser = selected;
     notifyListeners();
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fooderlich/models/app_state_manager.dart';
 import 'package:fooderlich/models/foderlich_pages.dart';
+import 'package:fooderlich/models/profile_manager.dart';
 import 'package:fooderlich/screens/explore_screen.dart';
 import 'package:fooderlich/screens/grocery_screen.dart';
 import 'package:fooderlich/screens/recipes_screen.dart';
@@ -76,7 +77,8 @@ class _HomeState extends State<Home> {
           backgroundImage: AssetImage('assets/profile_pics/person_stef.jpeg'),
         ),
         onTap: () {
-          // home -> profile
+          Provider.of<ProfileManager>(context, listen: false)
+            .tapOnProfile(true);
         },
       ),
     );

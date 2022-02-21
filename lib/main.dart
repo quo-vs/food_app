@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fooderlich/models/models.dart';
 import 'package:fooderlich/models/profile_manager.dart';
+import 'package:fooderlich/navigation/app_route_parser.dart';
 import 'package:fooderlich/navigation/app_router.dart';
 import 'package:fooderlich/theme.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,7 @@ class _FooderlichState extends State<Fooderlich> {
   final _groceryManager = GroceryManager();
   final _profileManager = ProfileManager();
   final _appStateManager = AppStateManager();
+  final routeParser = AppRouteParser();
 
   late AppRouter _appRouter;
 
@@ -33,7 +35,7 @@ class _FooderlichState extends State<Fooderlich> {
     super.initState();
   }
 
-@override
+  @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
@@ -54,13 +56,12 @@ class _FooderlichState extends State<Fooderlich> {
             theme = FooderlichTheme.light();
           }
 
-          return MaterialApp(
+          return MaterialApp.router(
             theme: theme,
             title: 'Fooderlich',
-            home: Router(
-              routerDelegate: _appRouter,
-              backButtonDispatcher: RootBackButtonDispatcher(),
-            ),
+            backButtonDispatcher: RootBackButtonDispatcher(),
+            routeInformationParser: routeParser,
+            routerDelegate: _appRouter,
           );
         },
       ),

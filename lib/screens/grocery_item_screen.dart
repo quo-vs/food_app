@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:fooderlich/components/components.dart';
-import 'package:fooderlich/models/grocery_item.dart';
 import 'package:fooderlich/models/models.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class GroceryItemScreen extends StatefulWidget {
-
   final Function(GroceryItem) onCreate;
   final Function(GroceryItem, int) onUpdate;
   final GroceryItem? originalItem;
@@ -29,19 +27,17 @@ class GroceryItemScreen extends StatefulWidget {
         index: index,
         onCreate: onCreate,
         onUpdate: onUpdate,
-      )
+      ),
     );
   }
-  
 
   const GroceryItemScreen({
     Key? key,
-      required this.onCreate,
-      required this.onUpdate,
-      this.index = -1,
-      this.originalItem,
-    })
-      : isUpdating = (originalItem != null),
+    required this.onCreate,
+    required this.onUpdate,
+    this.index = -1,
+    this.originalItem,
+  })  : isUpdating = (originalItem != null),
         super(key: key);
 
   @override
